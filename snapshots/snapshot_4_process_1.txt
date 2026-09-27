@@ -1,0 +1,15 @@
+snapshot_id: 4
+process_id: 1
+state: inMX
+logical_clock: 11898
+request_timestamp: 11896
+responses: 2
+waiting: [true false true]
+
+channel_from: 0
+marker_received: true
+messages: 0
+
+channel_from: 2
+marker_received: true
+messages: 0

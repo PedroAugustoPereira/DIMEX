@@ -1,0 +1,15 @@
+snapshot_id: 4
+process_id: 0
+state: wantMX
+logical_clock: 11898
+request_timestamp: 11898
+responses: 0
+waiting: [false false false]
+
+channel_from: 1
+marker_received: true
+messages: 0
+
+channel_from: 2
+marker_received: true
+messages: 0

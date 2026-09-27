@@ -38,19 +38,36 @@ import (
 
 func main() {
 
-	if len(os.Args) < 2 {
-		fmt.Println("Please specify at least one address:port!")
-		fmt.Println("go run useDIMEX-f.go 0 127.0.0.1:5000  127.0.0.1:6001  127.0.0.1:7002 ")
-		fmt.Println("go run useDIMEX-f.go 1 127.0.0.1:5000  127.0.0.1:6001  127.0.0.1:7002 ")
-		fmt.Println("go run useDIMEX-f.go 2 127.0.0.1:5000  127.0.0.1:6001  127.0.0.1:7002 ")
+	if len(os.Args) < 4 {
+		fmt.Println("Uso: go run useDIMEX-f.go ID ENDERECO... INICIA_SNAPSHOTS")
+		fmt.Println("go run useDIMEX-f.go 0 127.0.0.1:5000  127.0.0.1:6001  127.0.0.1:7002 true")
+		fmt.Println("go run useDIMEX-f.go 1 127.0.0.1:5000  127.0.0.1:6001  127.0.0.1:7002 false")
+		fmt.Println("go run useDIMEX-f.go 2 127.0.0.1:5000  127.0.0.1:6001  127.0.0.1:7002 false")
 		return
 	}
 
-	id, _ := strconv.Atoi(os.Args[1])
-	addresses := os.Args[2:]
-	// fmt.Print("id: ", id, "   ") fmt.Println(addresses)
+	id, err := strconv.Atoi(os.Args[1])
+	if err != nil {
+		fmt.Println("ID de processo invalido:", os.Args[1])
+		return
+	}
 
-	var dmx *DIMEX.DIMEX_Module = DIMEX.NewDIMEX(addresses, id, true)
+	// O ultimo argumento diz se este processo inicia os snapshots.
+	// Todos os argumentos entre o ID e o booleano sao enderecos.
+	lastArgument := len(os.Args) - 1
+	addresses := os.Args[2:lastArgument]
+	snapshotInitiator, err := strconv.ParseBool(os.Args[lastArgument])
+	if err != nil {
+		fmt.Println("INICIA_SNAPSHOTS deve ser true ou false")
+		return
+	}
+
+	if id < 0 || id >= len(addresses) {
+		fmt.Printf("ID %d invalido: existem %d processos\n", id, len(addresses))
+		return
+	}
+
+	var dmx *DIMEX.DIMEX_Module = DIMEX.NewDIMEX(addresses, id, snapshotInitiator, true)
 	fmt.Println(dmx)
 
 	// abre arquivo que TODOS processos devem poder usar
